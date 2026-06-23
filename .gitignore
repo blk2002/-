@@ -1,0 +1,21 @@
+# 本地隐私配置（不上传GitHub）
+env.local.js
+# 小程序本地配置，包含真实AppID
+project.config.json
+
+# 小程序依赖缓存
+node_modules/
+miniprogram_npm/
+
+# VS Code编辑器缓存
+.vscode/
+# IDE缓存
+.idea/
+
+# 日志、临时文件
+logs/
+*.log
+
+# 系统垃圾文件
+.DS_Store
+Thumbs.db

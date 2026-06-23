@@ -1,0 +1,9 @@
+{
+  "name": "getPendingUsers",
+  "version": "1.0.0",
+  "description": "获取待审核用户列表",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

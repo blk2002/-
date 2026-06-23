@@ -1,0 +1,251 @@
+/* pages/admin/admin.wxss */
+.container {
+  padding: 0;
+  min-height: 100vh;
+}
+
+.header {
+  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  padding: 50rpx 40rpx;
+  color: #fff;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab.active {
+  color: #4A90E2;
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background: #4A90E2;
+  border-radius: 2rpx;
+}
+
+.badge {
+  background: #FF6B6B;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  margin-left: 8rpx;
+}
+
+.content {
+  padding: 20rpx 40rpx;
+}
+
+/* 用户卡片 */
+.user-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.user-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  background: #E8F4FD;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 24rpx;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.username {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6rpx;
+}
+
+.user-meta {
+  font-size: 24rpx;
+  color: #FF9500;
+}
+
+.user-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn-approve {
+  background: #28A745;
+  color: #fff;
+  padding: 12rpx 24rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+}
+
+.btn-reject {
+  background: #FF6B6B;
+  color: #fff;
+  padding: 12rpx 24rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+}
+
+/* 课程选择器 */
+.course-selector {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 8rpx;
+  margin-bottom: 30rpx;
+}
+
+.course-tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-radius: 12rpx;
+  transition: all 0.2s;
+}
+
+.course-tab.active {
+  background: #4A90E2;
+  color: #fff;
+}
+
+/* 章节列表 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.add-btn {
+  background: #4A90E2;
+  color: #fff;
+  padding: 12rpx 24rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+}
+
+.chapter-list {
+  padding-bottom: 40rpx;
+}
+
+.chapter-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.chapter-info {
+  margin-bottom: 20rpx;
+}
+
+.chapter-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.chapter-order {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.chapter-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.action-btn {
+  padding: 14rpx 24rpx;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  flex: 1;
+  text-align: center;
+}
+
+.action-btn.blue {
+  background: #E8F4FD;
+  color: #4A90E2;
+}
+
+.action-btn.green {
+  background: #D4EDDA;
+  color: #28A745;
+}
+
+.action-btn.red {
+  background: #F8D7DA;
+  color: #DC3545;
+}
+
+.loading {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 120rpx 30rpx;
+}
+
+.empty-state .icon {
+  font-size: 100rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-state .text {
+  font-size: 28rpx;
+  color: #999;
+}

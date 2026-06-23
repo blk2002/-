@@ -1,0 +1,108 @@
+<!-- pages/lesson/lesson.wxml -->
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <view>加载中...</view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view wx:else>
+    <!-- 头部操作栏 -->
+    <view class="header-actions">
+      <view
+        class="action-btn {{isFavorite ? 'active' : ''}}"
+        bindtap="toggleFavorite"
+      >
+        {{isFavorite ? '❤️ 已收藏' : '🤍 收藏'}}
+      </view>
+    </view>
+
+    <!-- 标题 -->
+    <view class="lesson-title">{{lessonData.title}}</view>
+
+    <!-- 知识点讲解 -->
+    <view class="section" wx:if="{{lessonData.content}}">
+      <view class="section-title">📖 知识点讲解</view>
+      <view class="content-text">{{lessonData.content}}</view>
+    </view>
+
+    <!-- 代码示例 -->
+    <view class="section" wx:if="{{lessonData.codeExample}}">
+      <view class="code-header">
+        <view class="section-title" style="margin-bottom: 0;">💻 代码示例</view>
+        <view class="copy-btn" bindtap="copyCode">复制</view>
+      </view>
+      <view class="code-block">{{lessonData.codeExample}}</view>
+    </view>
+
+    <!-- 练习题 -->
+    <view class="section" wx:if="{{questions.length > 0}}">
+      <view class="section-title">✏️ 练习题</view>
+      <view class="hint-text">做完题目后点击"查看答案"，自行核对</view>
+
+      <view class="question-card" wx:for="{{questions}}" wx:key="*this" wx:for-item="question" wx:for-index="qIdx">
+        <view class="question-number">第 {{qIdx + 1}} 题</view>
+        <view class="question-type-tag" wx:if="{{question.type === 'choice'}}">选择题</view>
+        <view class="question-type-tag fill" wx:if="{{question.type === 'fill'}}">填空题</view>
+        <view class="question-text">{{question.question}}</view>
+
+        <!-- 选择题选项 -->
+        <view class="options" wx:if="{{question.type === 'choice'}}">
+          <view
+            class="option-item {{userAnswers[qIdx] === optKey ? 'selected' : ''}}"
+            wx:for="{{question.options}}"
+            wx:for-item="opt"
+            wx:for-index="optKey"
+            wx:key="*this"
+            data-qindex="{{qIdx}}"
+            data-option="{{optKey}}"
+            bindtap="selectAnswer"
+          >
+            <view class="option-letter">{{optKey}}</view>
+            <view class="option-text">{{opt}}</view>
+          </view>
+        </view>
+
+        <!-- 填空题输入框 -->
+        <view class="fill-input-wrap" wx:if="{{question.type === 'fill'}}">
+          <input
+            class="input"
+            placeholder="请输入答案"
+            value="{{userAnswers[qIdx]}}"
+            data-qindex="{{qIdx}}"
+            bindinput="onAnswerInput"
+          />
+        </view>
+
+        <!-- 显示答案按钮 -->
+        <view class="answer-toggle" data-qindex="{{qIdx}}" bindtap="toggleAnswer">
+          {{showAnswers[qIdx] ? '▼ 隐藏答案' : '▶ 查看答案和解析'}}
+        </view>
+
+        <!-- 答案解析 -->
+        <view class="answer-section" wx:if="{{showAnswers[qIdx]}}">
+          <view class="answer-label">✅ 答案：</view>
+          <view class="answer-text" wx:if="{{question.type === 'choice'}}">
+            选项 {{question.answer}}
+            <text wx:if="{{question.answer === 'A'}}">. {{question.options.A}}</text>
+            <text wx:if="{{question.answer === 'B'}}">. {{question.options.B}}</text>
+            <text wx:if="{{question.answer === 'C'}}">. {{question.options.C}}</text>
+            <text wx:if="{{question.answer === 'D'}}">. {{question.options.D}}</text>
+          </view>
+          <view class="answer-text" wx:if="{{question.type === 'fill'}}">{{question.answer}}</view>
+
+          <view class="explanation-label" wx:if="{{question.explanation}}">💡 解析：</view>
+          <view class="explanation-text" wx:if="{{question.explanation}}">{{question.explanation}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 无练习题 -->
+    <view class="section" wx:if="{{questions.length === 0}}">
+      <view class="section-title">✏️ 练习题</view>
+      <view class="empty-text">暂无练习题</view>
+    </view>
+
+    <view class="bottom-space"></view>
+  </view>
+</view>

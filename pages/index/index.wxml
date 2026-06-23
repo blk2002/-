@@ -1,0 +1,41 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+  <!-- 欢迎区域 -->
+  <view class="hero-section">
+    <view class="hello">👋 你好，{{userInfo.username || '同学'}}！</view>
+    <view class="subtitle">欢迎来到少儿编程课堂</view>
+  </view>
+
+  <!-- 课程入口 -->
+  <view class="section-title">选择课程</view>
+
+  <view class="courses">
+    <view
+      class="course-card"
+      wx:for="{{courses}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      data-name="{{item.name}}"
+      bindtap="goToCourse"
+      style="background: linear-gradient(135deg, {{item.color}} 0%, {{item.color}}CC 100%);"
+    >
+      <view class="course-icon">{{item.icon}}</view>
+      <view class="course-name">{{item.name}}</view>
+      <view class="course-desc">点击开始学习</view>
+      <view class="course-arrow">→</view>
+    </view>
+  </view>
+
+  <!-- 提示文字 -->
+  <view class="tip-section">
+    <view class="tip-card">
+      <view class="tip-icon">💡</view>
+      <view class="tip-content">
+        <view class="tip-title">学习小贴士</view>
+        <view class="tip-text">循序渐进，每节课后记得练习，遇到问题可以收藏知识点，方便日后复习。</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

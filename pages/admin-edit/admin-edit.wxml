@@ -1,0 +1,129 @@
+<!-- pages/admin-edit/admin-edit.wxml -->
+<view class="container">
+  <view class="loading" wx:if="{{loading}}">加载中...</view>
+
+  <!-- 章节编辑 -->
+  <view wx:elif="{{type === 'chapter'}}" class="form-container">
+    <view class="section">
+      <view class="form-item">
+        <view class="label">章节标题 *</view>
+        <input
+          class="input"
+          placeholder="例如：变量与数据类型"
+          value="{{chapterData.title}}"
+          bindinput="onTitleInput"
+          maxlength="50"
+        />
+      </view>
+
+      <view class="form-item">
+        <view class="label">排序序号</view>
+        <input
+          class="input"
+          type="number"
+          placeholder="数字越小越靠前"
+          value="{{chapterData.order}}"
+          bindinput="onOrderInput"
+        />
+      </view>
+    </view>
+
+    <button class="btn-primary save-btn" bindtap="onSave" disabled="{{submitting}}">
+      保存章节
+    </button>
+  </view>
+
+  <!-- 知识点列表 -->
+  <view wx:elif="{{type === 'lessonlist'}}" class="lessonlist-container">
+    <view class="section-header">
+      <view class="section-title">知识点列表</view>
+      <view class="add-btn" bindtap="addLesson">+ 新增</view>
+    </view>
+
+    <view class="lesson-item" wx:for="{{lessons}}" wx:key="_id">
+      <view class="lesson-info">
+        <view class="lesson-title">{{item.title}}</view>
+        <view class="lesson-meta">序号：{{item.order}}</view>
+      </view>
+      <view class="lesson-actions">
+        <view class="action-btn green" data-id="{{item._id}}" bindtap="editLesson">编辑</view>
+        <view class="action-btn red" data-id="{{item._id}}" bindtap="deleteLesson">删除</view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{lessons.length === 0}}">
+      <view class="icon">📝</view>
+      <view class="text">暂无知识点</view>
+      <view class="text" style="font-size: 24rpx; margin-top: 10rpx;">点击"新增"添加知识点</view>
+    </view>
+  </view>
+
+  <!-- 知识点编辑 -->
+  <view wx:elif="{{type === 'lesson'}}" class="form-container">
+    <view class="section">
+      <view class="form-item">
+        <view class="label">知识点标题 *</view>
+        <input
+          class="input"
+          placeholder="例如：变量定义与赋值"
+          value="{{lessonData.title}}"
+          bindinput="onTitleInput"
+          maxlength="50"
+        />
+      </view>
+
+      <view class="form-item">
+        <view class="label">排序序号</view>
+        <input
+          class="input"
+          type="number"
+          placeholder="数字越小越靠前"
+          value="{{lessonData.order}}"
+          bindinput="onOrderInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <view class="label">知识点讲解</view>
+        <textarea
+          class="textarea"
+          placeholder="输入知识点内容说明..."
+          value="{{lessonData.content}}"
+          bindinput="onContentInput"
+          maxlength="2000"
+        />
+      </view>
+
+      <view class="form-item">
+        <view class="label">代码示例</view>
+        <textarea
+          class="textarea code"
+          placeholder="输入代码示例..."
+          value="{{lessonData.codeExample}}"
+          bindinput="onCodeInput"
+          maxlength="2000"
+        />
+      </view>
+
+      <view class="form-item">
+        <view class="label-row">
+          <view class="label">练习题 (JSON格式)</view>
+          <view class="help-btn" bindtap="showQuestionFormat">📖 格式说明</view>
+        </view>
+        <textarea
+          class="textarea"
+          placeholder='[{"type":"choice","question":"题目内容","options":{"A":"选项1","B":"选项2"},"answer":"A"}]'
+          value="{{lessonData.questionsText}}"
+          bindinput="onQuestionsInput"
+          maxlength="5000"
+        />
+      </view>
+    </view>
+
+    <button class="btn-primary save-btn" bindtap="onSave" disabled="{{submitting}}">
+      保存知识点
+    </button>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

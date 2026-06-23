@@ -1,0 +1,93 @@
+<!-- pages/admin/admin.wxml -->
+<view class="container">
+  <view class="header">
+    <view class="title">🛠️ 管理后台</view>
+    <view class="subtitle">用户审核与课程内容管理</view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tabs">
+    <view
+      class="tab {{activeTab === 'users' ? 'active' : ''}}"
+      data-tab="users"
+      bindtap="switchTab"
+    >
+      👥 用户审核
+      <text wx:if="{{pendingUsers.length > 0}}" class="badge">{{pendingUsers.length}}</text>
+    </view>
+    <view
+      class="tab {{activeTab === 'chapters' ? 'active' : ''}}"
+      data-tab="chapters"
+      bindtap="switchTab"
+    >
+      📚 课程管理
+    </view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">加载中...</view>
+
+  <!-- 用户审核 -->
+  <view class="content" wx:elif="{{activeTab === 'users'}}">
+    <block wx:if="{{pendingUsers.length > 0}}">
+      <view class="user-card" wx:for="{{pendingUsers}}" wx:key="_id">
+        <view class="user-avatar">👤</view>
+        <view class="user-info">
+          <view class="username">{{item.username}}</view>
+          <view class="user-meta">待审核</view>
+        </view>
+        <view class="user-actions">
+          <view class="btn-approve" data-id="{{item._id}}" data-approved="true" bindtap="reviewUser">通过</view>
+          <view class="btn-reject" data-id="{{item._id}}" data-approved="false" bindtap="reviewUser">拒绝</view>
+        </view>
+      </view>
+    </block>
+    <view class="empty-state" wx:else>
+      <view class="icon">✅</view>
+      <view class="text">暂无待审核用户</view>
+    </view>
+  </view>
+
+  <!-- 课程管理 -->
+  <view class="content" wx:elif="{{activeTab === 'chapters'}}">
+    <!-- 课程选择 -->
+    <view class="course-selector">
+      <view
+        class="course-tab {{selectedCourse === course.id ? 'active' : ''}}"
+        wx:for="{{courses}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        data-name="{{item.name}}"
+        bindtap="switchCourse"
+      >
+        {{item.icon}} {{item.name}}
+      </view>
+    </view>
+
+    <view class="section-header">
+      <view class="section-title">{{currentCourseName}} - 章节列表</view>
+      <view class="add-btn" bindtap="addChapter">+ 新增章节</view>
+    </view>
+
+    <view class="chapter-list">
+      <view class="chapter-card" wx:for="{{chaptersMap[selectedCourse]}}" wx:key="_id">
+        <view class="chapter-info">
+          <view class="chapter-title">{{item.title}}</view>
+          <view class="chapter-order">序号：{{item.order}}</view>
+        </view>
+        <view class="chapter-actions">
+          <view class="action-btn blue" data-id="{{item._id}}" data-title="{{item.title}}" bindtap="goToLessons">管理知识点</view>
+          <view class="action-btn green" data-id="{{item._id}}" bindtap="editChapter">编辑</view>
+          <view class="action-btn red" data-id="{{item._id}}" bindtap="deleteChapter">删除</view>
+        </view>
+      </view>
+
+      <view class="empty-state" wx:if="{{!chaptersMap[selectedCourse] || chaptersMap[selectedCourse].length === 0}}">
+        <view class="icon">📖</view>
+        <view class="text">暂无章节</view>
+        <view class="text" style="font-size: 24rpx; margin-top: 10rpx;">点击上方"新增章节"添加</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

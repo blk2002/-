@@ -1,0 +1,80 @@
+<!-- pages/login/login.wxml -->
+<view class="login-container">
+  <!-- Logo区域 -->
+  <view class="logo-area">
+    <view class="logo-icon">📚</view>
+    <view class="logo-title">少儿编程课程</view>
+    <view class="logo-subtitle">开启你的编程之旅</view>
+  </view>
+
+  <!-- 表单区域 -->
+  <view class="form-card">
+    <view class="form-tabs">
+      <view class="tab {{mode === 'login' ? 'active' : ''}}" bindtap="switchMode" data-mode="login">
+        登录
+      </view>
+      <view class="tab {{mode === 'register' ? 'active' : ''}}" bindtap="switchMode" data-mode="register">
+        注册
+      </view>
+    </view>
+
+    <view class="form-content">
+      <!-- 用户名 -->
+      <view class="input-group">
+        <view class="input-label">用户名</view>
+        <input
+          class="input"
+          placeholder="请输入用户名"
+          value="{{username}}"
+          bindinput="onUsernameInput"
+          maxlength="20"
+        />
+      </view>
+
+      <!-- 密码 -->
+      <view class="input-group">
+        <view class="input-label">密码</view>
+        <input
+          class="input"
+          placeholder="请输入密码"
+          value="{{password}}"
+          bindinput="onPasswordInput"
+          password="true"
+          maxlength="20"
+        />
+      </view>
+
+      <!-- 确认密码（仅注册时显示） -->
+      <view class="input-group" wx:if="{{mode === 'register'}}">
+        <view class="input-label">确认密码</view>
+        <input
+          class="input"
+          placeholder="请再次输入密码"
+          value="{{confirmPassword}}"
+          bindinput="onConfirmPasswordInput"
+          password="true"
+          maxlength="20"
+        />
+      </view>
+
+      <!-- 提交按钮 -->
+      <button
+        class="btn-primary submit-btn"
+        bindtap="onSubmit"
+        disabled="{{loading}}"
+      >
+        {{mode === 'login' ? '登 录' : '注 册'}}
+      </button>
+
+      <!-- 提示文字 -->
+      <view class="hint-text" wx:if="{{mode === 'register'}}">
+        ⚠️ 注册后需要管理员审核通过才能登录
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部装饰 -->
+  <view class="footer">
+    <text>🎈 快乐学习，轻松编程 🎈</text>
+  </view>
+</view>
