@@ -38,7 +38,7 @@
     <!-- 练习题 -->
     <view class="section" wx:if="{{questions.length > 0}}">
       <view class="section-title">✏️ 练习题</view>
-      <view class="hint-text">做完题目后点击"查看答案"，自行核对</view>
+      <!--<view class="hint-text">做完题目后点击"查看答案"，自行核对</view>-->
 
       <view class="question-card" wx:for="{{questions}}" wx:key="*this" wx:for-item="question" wx:for-index="qIdx">
         <view class="question-number">第 {{qIdx + 1}} 题</view>
@@ -49,7 +49,7 @@
         <!-- 选择题选项 -->
         <view class="options" wx:if="{{question.type === 'choice'}}">
           <view
-            class="option-item {{userAnswers[qIdx] === optKey ? 'selected' : ''}}"
+            class="option-item {{userAnswers[qIdx] === optKey ? 'selected' : ''}} {{submitted[qIdx] ? 'disabled' : ''}}"
             wx:for="{{question.options}}"
             wx:for-item="opt"
             wx:for-index="optKey"
@@ -66,21 +66,30 @@
         <!-- 填空题输入框 -->
         <view class="fill-input-wrap" wx:if="{{question.type === 'fill'}}">
           <input
-            class="input"
+            class="input {{submitted[qIdx] ? 'disabled' : ''}}"
             placeholder="请输入答案"
             value="{{userAnswers[qIdx]}}"
             data-qindex="{{qIdx}}"
             bindinput="onAnswerInput"
+            disabled="{{submitted[qIdx]}}"
           />
         </view>
-
-        <!-- 显示答案按钮 -->
-        <view class="answer-toggle" data-qindex="{{qIdx}}" bindtap="toggleAnswer">
-          {{showAnswers[qIdx] ? '▼ 隐藏答案' : '▶ 查看答案和解析'}}
+        
+        <!-- 对错结果 -->
+        <view class="result-section" wx:if="{{submitted[qIdx]}}">
+        <view class="result-correct" wx:if="{{isCorrect[qIdx]}}">✅ 回答正确！</view>
+        <view class="result-wrong" wx:if="{{!isCorrect[qIdx]}}">❌ 回答错误，正确答案是：{{question.answer}}</view>
         </view>
-
+      
+        <!-- 提交并查看答案按钮 -->
+        <view class="answer-toggle" wx:if="{{!submitted[qIdx]}}" data-qindex="{{qIdx}}" bindtap="submitAndShowAnswer">
+          ✅ 提交并查看答案
+        </view>
+        <view class="answer-toggle submitted" wx:else>
+          ✓ 已提交
+        </view>
         <!-- 答案解析 -->
-        <view class="answer-section" wx:if="{{showAnswers[qIdx]}}">
+        <view class="answer-section" wx:if="{{submitted[qIdx]}}">
           <view class="answer-label">✅ 答案：</view>
           <view class="answer-text" wx:if="{{question.type === 'choice'}}">
             选项 {{question.answer}}

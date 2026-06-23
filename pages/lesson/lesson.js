@@ -13,6 +13,8 @@ Page({
     questions: [],
     showAnswers: [], // 记录每道题是否显示答案
     userAnswers: [], // 用户选择的答案
+    submitted: [],    // 记录每道题是否已提交
+    isCorrect: [],    // 记录每道题是否正确
     loading: true
   },
 
@@ -55,6 +57,8 @@ Page({
       // 初始化答案和用户答案数组
       const showAnswers = questions.map(() => false);
       const userAnswers = questions.map(() => null);
+      const submitted = questions.map(() => false);
+      const isCorrect = questions.map(() => null);
 
       // 检查是否已收藏
       let isFav = false;
@@ -64,19 +68,20 @@ Page({
           const favResult = await db.favorites.isFavorite(userInfo._id, this.data.lessonId);
           isFav = favResult.total > 0;
         } catch (err) {
-            console.log('检查收藏状态失败', err);
-          }
+          console.log('检查收藏状态失败', err);
+        }
       }
 
       this.setData({
         lessonData: lesson,
         questions: questions,
         showAnswers: showAnswers,
-        userAnswers: showAnswers,
+        userAnswers: userAnswers,   // 注意：原代码第75行有 bug，写成了 showAnswers，需要改成 userAnswers
+        submitted: submitted,       // 新增
+        isCorrect: isCorrect,       // 新增
         isFavorite: isFav,
         loading: false
       });
-
       // 更新学习进度
       if (userInfo && userInfo._id) {
         try {
@@ -100,6 +105,10 @@ Page({
   // 选择答案（选择题）
   selectAnswer(e) {
     const qIndex = e.currentTarget.dataset.qindex;
+    // 如果已经提交，不允许修改答案
+    if (this.data.submitted[qIndex]) {
+      return;
+    }
     const option = e.currentTarget.dataset.option;
     const userAnswers = this.data.userAnswers;
     userAnswers[qIndex] = option;
@@ -109,19 +118,58 @@ Page({
   // 填空题输入
   onAnswerInput(e) {
     const qIndex = e.currentTarget.dataset.qindex;
+    // 如果已经提交，不允许修改答案
+    if (this.data.submitted[qIndex]) {
+      return;
+    }
     const userAnswers = this.data.userAnswers;
     userAnswers[qIndex] = e.detail.value;
     this.setData({ userAnswers });
   },
 
-  // 显示/隐藏答案
-  toggleAnswer(e) {
+  // 提交并查看答案
+  submitAndShowAnswer(e) {
     const qIndex = e.currentTarget.dataset.qindex;
-    const showAnswers = this.data.showAnswers;
-    showAnswers[qIndex] = !showAnswers[qIndex];
-    this.setData({ showAnswers });
-  },
 
+    // 如果已经提交过，不再处理
+    if (this.data.submitted[qIndex]) {
+      return;
+    }
+
+    const question = this.data.questions[qIndex];
+    const userAnswer = this.data.userAnswers[qIndex];
+
+    if (!userAnswer) {
+      wx.showToast({
+        title: '请先选择或填写答案',
+        icon: 'none'
+      });
+      return;
+    }
+
+    // 判断对错
+    let correct = false;
+    if (question.type === 'choice') {
+      correct = userAnswer.toUpperCase() === question.answer.toUpperCase();
+    } else {
+      correct = userAnswer.trim() === question.answer.trim();
+    }
+
+    // 更新状态
+    const submitted = this.data.submitted;
+    const isCorrect = this.data.isCorrect;
+    const showAnswers = this.data.showAnswers;
+
+    submitted[qIndex] = true;
+    isCorrect[qIndex] = correct;
+    showAnswers[qIndex] = true;
+
+    this.setData({
+      submitted,
+      isCorrect,
+      showAnswers
+    });
+  },
   // 切换收藏
   async toggleFavorite() {
     const userInfo = app.getUserInfo();
